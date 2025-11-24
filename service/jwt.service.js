@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken')
 
 // Segredo fixo (apenas para estudo em aula)
-const SECRET = "minha_senha_super_secreta"
+const SECRET = process.env.JWT_SECRET
 
 // gera um token jwt por 3 horas
 function generateToken(payload){
-    return jwt.sign(payload, SECRET, { expiresIn: '3h'})
+    return jwt.sign(payload, SECRET, { expiresIn: process.env.JWT_EXPIRES_IN})
 }
 
 // verifica e decodifica um token jwt

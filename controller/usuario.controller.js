@@ -1,11 +1,22 @@
 const Usuario = require('../models/Usuario')
+const { validaCPF } = require("../utils/validar_cpf")
 const { hashPassword } = require('../service/bcrypt.service')
 
 const cadastrar = async (req,res)=>{
     const valores = req.body
 
     try{
+        const acharUsuario = await Usuario.findOne({where: {email: valores.email}})
+
+        if(acharUsuario){
+            return res.status(409).json({message: "Email na qual esta tentando fazer cadastro, ja esta cadastrado no sistema"})
+        }
+
+
         const senhaHash = await hashPassword(valores.senha)
+
+        validaCPF(validaCPF.cpf)
+
 
         const usuario = await Usuario.create({
             nome: valores.nome,
@@ -16,7 +27,7 @@ const cadastrar = async (req,res)=>{
             identidade: valores.identidade,
             tipe_usuario: valores.tipe_usuario
         })
-        res.status(201).json({message: 'Usuario cadastrado com sucesso!'})
+        res.status(201).json({message: 'Usuario cadastrado com sucesso!', cadastrou: true})
         console.log(usuario)
     }catch(err){
         res.status(500).json({error: "Erro ao cadastrar o usuario"})
