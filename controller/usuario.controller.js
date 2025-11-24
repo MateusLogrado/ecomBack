@@ -15,7 +15,9 @@ const cadastrar = async (req,res)=>{
 
         const senhaHash = await hashPassword(valores.senha)
 
-        validaCPF(validaCPF.cpf)
+        if(validaCPF(validaCPF.cpf) === false){
+            return res.status(500).json({message: "CPF invalido"})
+        }
 
 
         const usuario = await Usuario.create({
@@ -75,4 +77,20 @@ const apagar = async (req,res)=>{
     }
 }
 
-module.exports = { cadastrar, atualizar, apagar }
+const consultar = async (req,res)=>{
+    const body = req.body
+
+    try{
+        const usuario = await Usuario.findOne({where: {email: body.body}})
+        if(!usuario){
+            return res.status(404).json({message: "Usuario não encontrado"})
+        }else{
+            return res.status(200).json(usuario)
+        }
+    }catch(err){
+        res.status(500).json({error: "Erro ao consultar o usuario"})
+        console.error("Erro ao consultar o usuario",err)
+    }
+}
+
+module.exports = { cadastrar, atualizar, apagar, consultar }

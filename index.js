@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 app.use(cors())
 
+const authMiddleware = require("./middleware/auth.middleware")
 const usuarioController = require("./controller/usuario.controller")
 const authController = require("./controller/auth.controller")
 
@@ -19,8 +20,14 @@ app.get("/", (req,res)=>{
     res.status(201).json({message: "Aplicação rodando!"})
 })
 
-app.use("/usuario", usuarioController.cadastrar)
-app.use("/login", authController.login)
+app.post("/usuario", usuarioController.cadastrar)
+app.post("/login", authController.login)
+
+app.use(authMiddleware)
+
+app.put("/usuario", usuarioController.atualizar)
+app.delete("/usuario", usuarioController.apagar)
+app.post("/usuario", usuarioController.consultar)
 
 conn.sync()
 .then(()=>{
