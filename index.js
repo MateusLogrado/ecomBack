@@ -18,6 +18,8 @@ const usuarioController = require("./controller/usuario.controller")
 const enderecoController = require("./controller/endereco.controller")
 const produtoController = require("./controller/produto.controller")
 const estoqueController = require("./controller/produto.controller")
+const itemPedidoController = require("./controller/itemPedido.controller")
+const pedidoController = require("./controller/pedido.controller")
 
 app.get("/", (req,res)=>{
     res.status(201).json({message: "Aplicação rodando!"})
@@ -39,11 +41,17 @@ app.delete("/endereco", enderecoController.apagar)
 
 app.post("/produto", produtoController.cadastrar)
 app.get("/produtoo", produtoController.listar)
-app.put("/eproduto", produtoController.atualizar)
-app.delete("/eproduto", produtoController.apagar)
+app.put("/produto", produtoController.atualizar)
+app.delete("/produto", produtoController.apagar)
 
 app.post("/estoque", estoqueController.cadastrar)
 app.get("/estoque", estoqueController.listar)
+
+app.post("/itemPedido", itemPedidoController.cadastrar)
+
+app.post("/pedido", pedidoController.cadastrar)
+app.get("/pedido", pedidoController.listar)
+app.put("/pedido", pedidoController.atualizar)
 
 conn.sync()
 .then(()=>{
