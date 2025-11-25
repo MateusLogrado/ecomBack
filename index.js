@@ -20,6 +20,7 @@ const produtoController = require("./controller/produto.controller")
 const estoqueController = require("./controller/produto.controller")
 const itemPedidoController = require("./controller/itemPedido.controller")
 const pedidoController = require("./controller/pedido.controller")
+const entregaController = require("./controller/entrega.controller")
 
 app.get("/", (req,res)=>{
     res.status(201).json({message: "Aplicação rodando!"})
@@ -52,6 +53,10 @@ app.post("/itemPedido", itemPedidoController.cadastrar)
 app.post("/pedido", pedidoController.cadastrar)
 app.get("/pedido", pedidoController.listar)
 app.put("/pedido", pedidoController.atualizar)
+
+app.post("/entrega", entregaController.cadastrar)
+app.get("/entrega", entregaController.listar)
+app.put("/entrega", entregaController.atualizar)
 
 conn.sync()
 .then(()=>{
