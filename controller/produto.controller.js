@@ -1,4 +1,3 @@
-const { UPDATE } = require("sequelize/lib/query-types")
 const Produto = require("../models/Produto")
 
 const cadastrar = async (req,res) =>{
