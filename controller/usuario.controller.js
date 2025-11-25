@@ -85,7 +85,7 @@ const consultar = async (req,res)=>{
         if(!usuario){
             return res.status(404).json({message: "Usuario não encontrado"})
         }else{
-            return res.status(200).json(usuario)
+            return res.status(200).json({nome: usuario.nome, email: usuario.email, telefone: usuario.telefone, cpf: usuario.cpf, identidade: usuario.identidade})
         }
     }catch(err){
         res.status(500).json({error: "Erro ao consultar o usuario"})
