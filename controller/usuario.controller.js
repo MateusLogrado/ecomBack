@@ -39,18 +39,16 @@ const cadastrar = async (req,res)=>{
 
 const atualizar = async (req,res)=>{
     const body = req.body
-    const id = req.params.body
 
     try{
         
-        const usuario = await Usuario.findByPk(id)
+        const usuario = await Usuario.findOne({where: {email: body.email}})
 
         if(!usuario){
             return res.status(404).json({message: "Usuario não encontrado"})
         }else{
             await usuario.update(body)
-            const usuarioAtualizado = await Usuario.findByPk(id)
-            res.status(200).json(usuarioAtualizado)
+            res.status(200).json({message: "Usuario atualizado"})
         }
     }catch(err){
         res.status(500).json({error: "Erro ao atualizar o usuario"})
@@ -80,8 +78,10 @@ const apagar = async (req,res)=>{
 const consultar = async (req,res)=>{
     const body = req.body
 
+    console.log(body)
+
     try{
-        const usuario = await Usuario.findOne({where: {email: body.body}})
+        const usuario = await Usuario.findOne({where: {email: body.email}})
         if(!usuario){
             return res.status(404).json({message: "Usuario não encontrado"})
         }else{
