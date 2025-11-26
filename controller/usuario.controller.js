@@ -1,9 +1,11 @@
 const Usuario = require('../models/Usuario')
 const { validaCPF } = require("../utils/validar_cpf")
 const { hashPassword } = require('../service/bcrypt.service')
+const { comparePassword } = require("../service/bcrypt.service")
 
 const cadastrar = async (req,res)=>{
     const valores = req.body
+    console.log(valores)
 
     try{
         const acharUsuario = await Usuario.findOne({where: {email: valores.email}})
@@ -15,7 +17,7 @@ const cadastrar = async (req,res)=>{
 
         const senhaHash = await hashPassword(valores.senha)
 
-        if(validaCPF(validaCPF.cpf) === false){
+        if(validaCPF(valores.cpf) === false){
             return res.status(500).json({message: "CPF invalido"})
         }
 
@@ -57,17 +59,22 @@ const atualizar = async (req,res)=>{
 }
 
 const apagar = async (req,res)=>{
-    const id = req.params.body
+    const body = req.body
 
     try{
         
-        const usuario = await Usuario.findByPk(id)
-
+        const usuario = await Usuario.findOne({where: {email: body.email}})
         if(!usuario){
             return res.status(404).json({message: "Usuario não encontrado"})
         }else{
-            await usuario.destroy(id)
-            res.status(200).json({message: "Usuario apagado com sucesso"})
+            const senhaValida = await comparePassword(body.senha, usuario.senha)
+
+            if(senhaValida){
+                await usuario.destroy({where: {email: body.email}})
+                res.status(200).json({message: "Usuario apagado com sucesso"})
+            }else{
+                return res.status(500).json({message: "Senha incorreta"})
+            }
         }
     }catch(err){
         res.status(500).json({error: "Erro ao apagar o usuario"})
