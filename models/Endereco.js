@@ -46,7 +46,7 @@ const Endereco = db.define('endereco',{
     },
     apelido: { // Preenchido pelo usuário (Ex: "Casa", "Trabalho")
         type: DataTypes.STRING(50),
-        allowNull: true 
+        allowNull: false 
     },
     is_principal: { // Para identificar se este é o endereço padrão de entrega
         type: DataTypes.BOOLEAN,

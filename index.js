@@ -36,9 +36,8 @@ app.delete("/usuario", usuarioController.apagar)
 app.post("/usuario/consultar", usuarioController.consultar)
 
 app.post("/endereco", enderecoController.cadastrar)
-app.get("/endereco", enderecoController.listar)
-app.put("/endereco", enderecoController.atualizar)
-app.delete("/endereco", enderecoController.apagar)
+app.post("/endereco/listar", enderecoController.listar)
+app.delete("/endereco/:id", enderecoController.apagar)
 
 app.post("/produto", produtoController.cadastrar)
 app.get("/produtoo", produtoController.listar)
