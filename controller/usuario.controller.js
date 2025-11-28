@@ -29,7 +29,7 @@ const cadastrar = async (req,res)=>{
             telefone: valores.telefone,
             cpf: valores.cpf,
             identidade: valores.identidade,
-            tipe_usuario: valores.tipe_usuario
+            tipo_usuario: valores.tipo_usuario
         })
         res.status(201).json({message: 'Usuario cadastrado com sucesso!', cadastrou: true})
         console.log(usuario)
@@ -92,7 +92,7 @@ const consultar = async (req,res)=>{
         if(!usuario){
             return res.status(404).json({message: "Usuario não encontrado"})
         }else{
-            return res.status(200).json({nome: usuario.nome, email: usuario.email, telefone: usuario.telefone, cpf: usuario.cpf, identidade: usuario.identidade})
+            return res.status(200).json({nome: usuario.nome, email: usuario.email, telefone: usuario.telefone, cpf: usuario.cpf, identidade: usuario.identidade, tipo_usuario: usuario.tipo_usuario})
         }
     }catch(err){
         res.status(500).json({error: "Erro ao consultar o usuario"})

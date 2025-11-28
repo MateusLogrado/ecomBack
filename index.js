@@ -17,7 +17,7 @@ const authController = require("./controller/auth.controller")
 const usuarioController = require("./controller/usuario.controller")
 const enderecoController = require("./controller/endereco.controller")
 const produtoController = require("./controller/produto.controller")
-const estoqueController = require("./controller/produto.controller")
+const estoqueController = require("./controller/estoque.controller")
 const itemPedidoController = require("./controller/itemPedido.controller")
 const pedidoController = require("./controller/pedido.controller")
 const entregaController = require("./controller/entrega.controller")
@@ -28,6 +28,9 @@ app.get("/", (req,res)=>{
 
 app.post("/usuario", usuarioController.cadastrar)
 app.post("/login", authController.login)
+app.get("/produto", produtoController.listar)
+
+
 
 app.use(authMiddleware)
 
@@ -40,7 +43,6 @@ app.post("/endereco/listar", enderecoController.listar)
 app.delete("/endereco/:id", enderecoController.apagar)
 
 app.post("/produto", produtoController.cadastrar)
-app.get("/produtoo", produtoController.listar)
 app.put("/produto", produtoController.atualizar)
 app.delete("/produto", produtoController.apagar)
 

@@ -15,8 +15,8 @@ const Produto = db.define('produto',{
         type: DataTypes.TEXT,
         allowNull: true // Pode ser preenchida posteriormente
     },
-    modelo: {
-        type: DataTypes.STRING(50),
+    nivelPicancia: {
+        type: DataTypes.STRING(10),
         allowNull: false,
     },
     preco: {

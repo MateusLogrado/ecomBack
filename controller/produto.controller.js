@@ -2,9 +2,12 @@ const Produto = require("../models/Produto")
 
 const cadastrar = async (req,res) =>{
     const body = req.body
+
+    console.log("produto: ", body)
+
     try{
-        await Produto.create(body)
-        res.status(200).json({message: "Produto cadatrado"})
+        const produto = await Produto.create(body)
+        res.status(200).json(produto)
     }catch(err){
         res.status(500).json({error: "Erro ao cadastrar o produto"})
         console.error("Erro ao cadastrar o produto",err)
