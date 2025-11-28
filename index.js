@@ -29,8 +29,7 @@ app.get("/", (req,res)=>{
 app.post("/usuario", usuarioController.cadastrar)
 app.post("/login", authController.login)
 app.get("/produto", produtoController.listar)
-
-
+app.get("/estoque", estoqueController.listar)
 
 app.use(authMiddleware)
 
@@ -47,7 +46,6 @@ app.put("/produto", produtoController.atualizar)
 app.delete("/produto", produtoController.apagar)
 
 app.post("/estoque", estoqueController.cadastrar)
-app.get("/estoque", estoqueController.listar)
 
 app.post("/itemPedido", itemPedidoController.cadastrar)
 
