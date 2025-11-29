@@ -1,4 +1,5 @@
 const Estoque = require("../models/Estoque")
+const Produto = require("../models/Produto")
 
 const cadastrar = async (req,res) =>{
     const body = req.body
@@ -24,4 +25,32 @@ const listar = async (req,res) =>{
     }
 }
 
-module.exports = { cadastrar, listar }
+const atualizar = async (req,res) =>{
+    const body = req.body
+
+    console.log(body)
+
+    try{
+        const produto = await Produto.findOne({where: {nome: body.nome}})
+        if(!produto){
+            res.status(404).json({error: "produto não encontrado"})
+        }else{
+            const estoque = await Estoque.findOne({where: {idProduto: produto.codProduto}})
+
+            if(!estoque){
+                res.status(404).json({error: "Estoque não encontrado"})
+            }else{
+            await estoque.update({
+                quantidade_atual: body.quantidade_atual,
+                quantidade_minima: body.quantidade_minima
+            })
+            res.status(200).json({message: "Estoque atualizado com sucesso"})
+            }
+        }
+    }catch(err){
+        res.status(500).json({error: "Erro ao atualizar o estoque"})
+        console.error("Erro ao atualizar o estoque",err)
+    }
+}
+
+module.exports = { cadastrar, listar, atualizar }
