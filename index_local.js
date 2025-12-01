@@ -3,7 +3,7 @@ const cors = require("cors")
 const express = require("express")
 const app = express()
 
-const conn = require("./db/conn")
+const conn = require("./db/conn_local")
 
 const PORT = process.env.PORT
 const hostname = process.env.DB_HOST  
