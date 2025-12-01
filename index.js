@@ -12,6 +12,38 @@ app.get("/", (req,res)=>{
     res.status(201).json({message: "Aplicação rodando!"})
 })
 
+app.post("/usuario", usuarioController.cadastrar)
+app.post("/login", authController.login)
+app.get("/produto", produtoController.listar)
+app.get("/estoque", estoqueController.listar)
+
+
+app.use(authMiddleware)
+
+app.put("/usuario", usuarioController.atualizar)
+app.delete("/usuario", usuarioController.apagar)
+app.post("/usuario/consultar", usuarioController.consultar)
+
+app.post("/endereco", enderecoController.cadastrar)
+app.post("/endereco/listar", enderecoController.listar)
+app.delete("/endereco/:id", enderecoController.apagar)
+
+app.post("/produto", produtoController.cadastrar)
+app.put("/produto", produtoController.atualizar)
+
+app.post("/estoque", estoqueController.cadastrar)
+app.put("/estoque", estoqueController.atualizar)
+
+app.post("/itemPedido", itemPedidoController.cadastrar)
+
+app.post("/pedido", pedidoController.cadastrar)
+app.get("/pedido", pedidoController.listar)
+app.put("/pedido", pedidoController.atualizar)
+
+app.post("/entrega", entregaController.cadastrar)
+app.get("/entrega", entregaController.listar)
+app.put("/entrega", entregaController.atualizar)
+
 async function startServer() {
   try {
     if (!isProduction) {
