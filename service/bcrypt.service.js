@@ -7,6 +7,9 @@ async function hashPassword(password){
 }
 // compara uma senha com o hash armazenado
 async function comparePassword(password, hash){
+    console.log("Senha: ", password)
+    console.log("Hash: ", hash)
+
     return await bcrypt.compare(password, hash)
 }
 

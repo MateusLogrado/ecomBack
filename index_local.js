@@ -1,13 +1,12 @@
 require('dotenv').config()
+const cors = require("cors")
 const express = require("express")
 const app = express()
-const conn = require("./db/conn")
-const cors = require("cors")
 
-const PORT = process.env.PORT || 3000
-const HOST = process.env.HOST || '0.0.0.0' // 0.0.0.0 é seguro e aceita conexões em PaaS
+const conn = require("./db/conn_local")
 
-const isProduction = process.env.NODE_ENV === 'production'
+const PORT = process.env.PORT
+const hostname = process.env.DB_HOST  
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
@@ -31,6 +30,7 @@ app.post("/usuario", usuarioController.cadastrar)
 app.post("/login", authController.login)
 app.get("/produto", produtoController.listar)
 app.get("/estoque", estoqueController.listar)
+
 
 app.use(authMiddleware)
 
@@ -58,25 +58,12 @@ app.post("/entrega", entregaController.cadastrar)
 app.get("/entrega", entregaController.listar)
 app.put("/entrega", entregaController.atualizar)
 
-async function startServer() {
-  try {
-    if (!isProduction) {
-      // Em desenvolvimento: sincroniza alterando o esquema para facilitar dev
-      await conn.sync({ alter: true })
-      console.log('Banco sincronizado (dev) com { alter: true }');
-    } else {
-      // Em produção: NÃO sincronize automaticamente (evita droppar/alterar sem controle)
-      await conn.authenticate()
-      console.log('Banco autenticado (produção)')
-    }
-
-    app.listen(PORT, HOST, () => {
-      console.log(`Servidor rodando em http://${HOST}:${PORT}`)
-    });
-  } catch (err) {
-    console.error('Erro ao conectar ao banco ou iniciar o servidor:', err)
-    process.exit(1) // sai com erro para o Railway identificar falha no deploy
-  }
-}
-
-startServer()
+conn.sync()
+.then(()=>{
+    app.listen(PORT, hostname, ()=>{
+        console.log(`aplicação rodando em http://${hostname}:${PORT}`)
+    })
+})
+.catch(err =>{
+    console.error("Erro ao iniciar a aplicação: ", err)
+})
