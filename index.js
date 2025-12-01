@@ -8,6 +8,16 @@ const HOST = process.env.HOST || '0.0.0.0' // 0.0.0.0 é seguro e aceita conexõ
 
 const isProduction = process.env.NODE_ENV === 'production'
 
+const authMiddleware = require("./middleware/auth.middleware")
+const authController = require("./controller/auth.controller")
+const usuarioController = require("./controller/usuario.controller")
+const enderecoController = require("./controller/endereco.controller")
+const produtoController = require("./controller/produto.controller")
+const estoqueController = require("./controller/estoque.controller")
+const itemPedidoController = require("./controller/itemPedido.controller")
+const pedidoController = require("./controller/pedido.controller")
+const entregaController = require("./controller/entrega.controller")
+
 app.get("/", (req,res)=>{
     res.status(201).json({message: "Aplicação rodando!"})
 })
