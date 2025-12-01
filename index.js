@@ -8,6 +8,10 @@ const HOST = process.env.HOST || '0.0.0.0' // 0.0.0.0 é seguro e aceita conexõ
 
 const isProduction = process.env.NODE_ENV === 'production'
 
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
+app.use(cors())
+
 const authMiddleware = require("./middleware/auth.middleware")
 const authController = require("./controller/auth.controller")
 const usuarioController = require("./controller/usuario.controller")
