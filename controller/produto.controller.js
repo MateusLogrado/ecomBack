@@ -44,4 +44,4 @@ const atualizar = async (req,res) =>{
     }
 }
 
-module.exports = { cadastrar, listar, atualizar, apagar }
+module.exports = { cadastrar, listar, atualizar }
