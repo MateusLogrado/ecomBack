@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require("express")
 const app = express()
 const conn = require("./db/conn")
+const cors = require("cors")
 
 const PORT = process.env.PORT || 3000
 const HOST = process.env.HOST || '0.0.0.0' // 0.0.0.0 é seguro e aceita conexões em PaaS
