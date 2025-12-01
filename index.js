@@ -8,6 +8,10 @@ const HOST = process.env.HOST || '0.0.0.0' // 0.0.0.0 é seguro e aceita conexõ
 
 const isProduction = process.env.NODE_ENV === 'production'
 
+app.get("/", (req,res)=>{
+    res.status(201).json({message: "Aplicação rodando!"})
+})
+
 async function startServer() {
   try {
     if (!isProduction) {
