@@ -24,7 +24,7 @@ const Pedido = db.define('pedido',{
         }
     },
     dataPedido: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         defaultValue: DataTypes.NOW
     },

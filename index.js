@@ -48,7 +48,7 @@ app.put("/produto", produtoController.atualizar)
 app.post("/estoque", estoqueController.cadastrar)
 app.put("/estoque", estoqueController.atualizar)
 
-app.post("/itemPedido", itemPedidoController.cadastrar)
+app.post("/itemPedido/:id", itemPedidoController.cadastrar)
 
 app.post("/pedido", pedidoController.cadastrar)
 app.get("/pedido", pedidoController.listar)

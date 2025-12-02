@@ -1,10 +1,27 @@
 const Pedido = require("../models/Pedido")
+const Usuario = require("../models/Usuario")
 
 const cadastrar = async (req,res) =>{
     const body = req.body
     try{
-        await Pedido.create(body)
-        res.status(200).json({message: "Pedido cadatrado"})
+        const usuario = await Usuario.findOne({where: {email: body.email}})
+        if(usuario){
+            const valores ={
+                idEndereco: body.idEndereco,
+                metodoPagamento: body.metodoPagamento,
+                idUsuario: usuario.codUsuario,
+                dataPedido: body.dataPedido,
+                valorFrete: body.valorFrete,
+                valorSubtotal: body.valorSubtotal,
+                valorFrete: body.valorFrete,
+                metodoPagamento: body.metodoPagamento,
+            }
+
+            const pedido = await Pedido.create(valores)
+            res.status(200).json({codPedido: pedido.codPedido})
+        }{
+            res.status(404).json({message: "Usuario não achado"})
+        }
     }catch(err){
         res.status(500).json({error: "Erro ao cadastrar o Pedido"})
         console.error("Erro ao cadastrar o Pedido",err)
