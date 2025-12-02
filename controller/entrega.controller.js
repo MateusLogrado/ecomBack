@@ -11,32 +11,25 @@ const cadastrar = async (req,res) =>{
     }
 }
 
-const listar = async (req,res) =>{
-    try{
-        const entregas = await Entrega.findAll()
-        res.status(200).json(entregas)
-    }catch(err){
-        res.status(500).json({error: "Erro ao listar a entrega"})
-        console.error("Erro ao listar a entrega",err)
-    }
-}
-
-const atualizar = async (req,res) =>{
+const atualizar = async (req, res) => {
     const body = req.body
-    const id = req.params.id
 
-    try{
-        const entrega = await Entrega.findByPk(id)
-        if(!entrega){
-            res.status(404).json({error: "entrega não encontrado"})
-        }else{
-            await Entrega.update(body, {where: {codEntrega: id}})
-            res.status(200).json({message: "Entrega atualizado com sucesso"})
-        }
-    }catch(err){
-        res.status(500).json({error: "Erro ao atualizar a entrega"})
-        console.error("Erro ao atualizar a entrega",err)
+    try {
+        await Entrega.update({
+            statusEntrega: body.statusEntrega,
+            codigoRastreio: body.codigoRastreio,
+            transportadora: body.transportadora,
+            dataEstimada: body.dataEstimada || null, 
+            dataEntrega: body.dataEntrega || null
+        }, { 
+            where: { idPedido: body.idPedido } 
+        })
+
+        res.status(200).json({ message: "Entrega atualizada!" })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Erro ao atualizar entrega" })
     }
 }
 
-module.exports = { cadastrar, listar, atualizar }
+module.exports = { cadastrar, atualizar}

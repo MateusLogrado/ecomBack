@@ -1,5 +1,5 @@
-const Pedido = require("../models/Pedido")
-const Usuario = require("../models/Usuario")
+const { Usuario, Pedido, Entrega, ItemPedido, Produto } = require('../models/rel')
+const rel = require("../models/rel")
 
 const cadastrar = async (req,res) =>{
     const body = req.body
@@ -12,8 +12,8 @@ const cadastrar = async (req,res) =>{
                 idUsuario: usuario.codUsuario,
                 dataPedido: body.dataPedido,
                 valorFrete: body.valorFrete,
+                valorTotal: Number(body.valorFrete) + Number(body.valorSubtotal),
                 valorSubtotal: body.valorSubtotal,
-                valorFrete: body.valorFrete,
                 metodoPagamento: body.metodoPagamento,
             }
 
@@ -28,31 +28,55 @@ const cadastrar = async (req,res) =>{
     }
 }
 
-const listar = async (req,res) =>{
-    try{
-        const pedidos = await Pedido.findAll()
+const listar = async (req, res) => {
+    const { email } = req.body
+
+    try {
+        const usuario = await Usuario.findOne({ where: { email: email } })
+        
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuário não encontrado" })
+        }
+
+        const pedidos = await Pedido.findAll({
+            where: { idUsuario: usuario.codUsuario },
+            include: [
+                { 
+                    model: Entrega,
+                    as: 'entregaPedido',
+                    required: false 
+                },
+                { 
+                    model: ItemPedido,
+                    as: 'itensPedido', 
+                    required: false,
+                    include: [
+                        {
+                            model: Produto,
+                            as: 'produtoItem'
+                        }
+                    ]
+                }
+            ]
+        })
+
         res.status(200).json(pedidos)
-    }catch(err){
-        res.status(500).json({error: "Erro ao listar o pedido"})
-        console.error("Erro ao listar o pedido",err)
+
+    } catch (err) {
+        console.error("Erro", err)
+        res.status(500).json({ message: "Erro ao listar pedidos" })
     }
 }
 
-const atualizar = async (req,res) =>{
+const atualizar = async (req, res) => {
     const body = req.body
-    const id = req.params.id
 
-    try{
-        const pedido = await Pedido.findByPk(id)
-        if(!pedido){
-            res.status(404).json({error: "pedido não encontrado"})
-        }else{
-            await Pedido.update(body, {where: {codPedido: id}})
-            res.status(200).json({message: "Pedido atualizado com sucesso"})
-        }
-    }catch(err){
-        res.status(500).json({error: "Erro ao atualizar o Pedido"})
-        console.error("Erro ao atualizar o Pedido",err)
+    try {
+        await Pedido.update({ status: body.status }, { where: { codPedido: body.codPedido } })
+        res.status(200).json({ message: "Status atualizado!" })
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Erro ao atualizar pedido" })
     }
 }
 

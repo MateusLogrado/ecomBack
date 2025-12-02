@@ -37,6 +37,7 @@ app.use(authMiddleware)
 app.put("/usuario", usuarioController.atualizar)
 app.delete("/usuario", usuarioController.apagar)
 app.post("/usuario/consultar", usuarioController.consultar)
+app.get("/usuario", usuarioController.listar)
 
 app.post("/endereco", enderecoController.cadastrar)
 app.post("/endereco/listar", enderecoController.listar)
@@ -51,11 +52,10 @@ app.put("/estoque", estoqueController.atualizar)
 app.post("/itemPedido/:id", itemPedidoController.cadastrar)
 
 app.post("/pedido", pedidoController.cadastrar)
-app.get("/pedido", pedidoController.listar)
+app.post("/pedido/listar", pedidoController.listar)
 app.put("/pedido", pedidoController.atualizar)
 
 app.post("/entrega", entregaController.cadastrar)
-app.get("/entrega", entregaController.listar)
 app.put("/entrega", entregaController.atualizar)
 
 conn.sync()

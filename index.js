@@ -49,13 +49,14 @@ app.post("/estoque", estoqueController.cadastrar)
 app.put("/estoque", estoqueController.atualizar)
 
 app.post("/itemPedido/:id", itemPedidoController.cadastrar)
+app.post("/itemPedido", itemPedidoController.listar)
 
 app.post("/pedido", pedidoController.cadastrar)
-app.get("/pedido", pedidoController.listar)
+app.post("/pedido", pedidoController.listar)
 app.put("/pedido", pedidoController.atualizar)
 
 app.post("/entrega", entregaController.cadastrar)
-app.get("/entrega", entregaController.listar)
+app.post("/entrega", entregaController.listar)
 app.put("/entrega", entregaController.atualizar)
 
 async function startServer() {

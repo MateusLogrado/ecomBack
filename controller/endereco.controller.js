@@ -68,17 +68,13 @@ const listar = async (req, res) => {
         if (!usuario) {
             return res.status(404).json({ error: "Usuário não encontrado" })
         }
-        const enderecos = await Endereco.findAll({
-            where: { 
-                idUsuario: usuario.codUsuario
-            }
-        })
+        const enderecos = await Endereco.findAll({where: { idUsuario: usuario.codUsuario}})
 
-        res.status(200).json(enderecos);
+        res.status(200).json(enderecos)
 
     } catch (err) {
         console.error("Erro ao listar o endereço", err)
-        res.status(500).json({ error: "Erro interno" })
+        res.status(500).json({ message: "Erro ao listar o endereço" })
     }
 }
 

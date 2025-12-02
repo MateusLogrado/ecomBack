@@ -100,4 +100,16 @@ const consultar = async (req,res)=>{
     }
 }
 
-module.exports = { cadastrar, atualizar, apagar, consultar }
+const listar = async (req, res) => {
+    try {
+        const usuarios = await Usuario.findAll({
+            attributes: ['codUsuario', 'nome', 'email', 'tipo_usuario']
+        })
+        res.status(200).json(usuarios)
+    } catch (err) {
+        console.error("Erro ao listar usuários:", err)
+        res.status(500).json({ error: "Erro interno" })
+    }
+}
+
+module.exports = { cadastrar, atualizar, apagar, consultar, listar }
